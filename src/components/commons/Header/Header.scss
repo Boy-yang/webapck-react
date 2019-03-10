@@ -1,0 +1,13 @@
+.header{
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items: flex-end;
+
+  .navBar{
+    margin-left:1rem;
+  }
+  .shopCar{
+    margin-right:1rem;
+  }
+}
