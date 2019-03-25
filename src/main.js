@@ -15,7 +15,6 @@ const Login = lazy(()=>import('./components/Login/Login.js'));
 const Reg = lazy(()=>import('./components/Register/Reg.js'));
 import './style/reset.scss';
 
-
 const reducer = combineReducers({
         ...reducers,
         routing:routerReducer
