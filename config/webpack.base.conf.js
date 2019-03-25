@@ -3,84 +3,73 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const isDev = process.env.NODE_ENV.trim() !== 'production';
-const resolve = dir => path.join(__dirname,'../',dir);
+const resolve = dir => path.join(__dirname, '../', dir);
 module.exports = {
-	entry:{
-		main:"./src/main.js",
+	entry: {
+		main: path.resolve(__dirname, "../src/main.js"),
 	},
-	output:{
-		path:resolve("dist"),
-		filename:"js/[name].[hash:6].js",
-		publicPath:'/',
+	performance: {
+    // hints: "warning", // 枚举    hints: "error", // 性能提示中抛出错误
+    maxAssetSize: 5000000, // 整数类型（以字节为单位）
+    maxEntrypointSize: 400000, // 整数类型（以字节为单位）
+    assetFilter: function(assetFilename) {
+      // 提供资源文件名的断言函数
+      return assetFilename.endsWith('.css') || assetFilename.endsWith('.js');
+    }
+  },
+	output: {
+		path: resolve("dist"),
+		filename: isDev ? "js/[name].js" : "js/[name].[hash].js",
+		publicPath: '/',
 	},
-	resolve:{
-		extensions:['.js','.jsx','.scss'],
-        alias: {
-		    "@":resolve('src'),
-            components:resolve("src/components")
-        }
-    },
-	module:{
-		rules:[
-			{
+	resolve: {
+		extensions: ['.js', '.jsx', '.scss'],
+	},
+	module: {
+		rules: [{
 				test: /\.(js|jsx)$/,
-				exclude:/node_modules/,
-				use:["babel-loader?cacheDirectory"]	
+				exclude: /node_modules/,
+				use: ["babel-loader?cacheDirectory"]
 			},
 			{
-				test:/\.html$/,
-				loader:"html-loader"
-            },
+				test: /\.html$/,
+				loader: "html-loader"
+			},
 			{
-				test:/\.(css|scss)$/,
-				use:[
+				test: /\.(css|scss)$/,
+				use: [
 					isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
 					{
 						loader: 'css-loader',
 						options: {
-						  // url:false, //false  css中加载图片的路径将不会被解析 不会改变
-						  // minimize:true, //压缩css
-						  importLoaders: 1
+							importLoaders: 1
 						}
 					},
 					"sass-loader"
 				]
 			},
 			{
-				test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-				loader:'url-loader',
+				test: /\.(ttf|woff|svg|bmp|png|gif|jpe?g)$/,
+				loader: 'url-loader',
 				options: {
-					limit: isDev ? 0 : 10000,
-					name: 'images/[name].[hash:6].[ext]'
+					limit: isDev ? 0 : 8000,
+					name: 'images/[name].[hash].[ext]'
 				},
 			},
-			{
-				test:/\.(ttf|woff|svg)$/,
-				use:[
-					{
-						loader:'url-loader',
-						options:{
-							name:'fonts/[name].[hash:6].[ext]'
-						}
-					}
-				]
-			},
-        ]
+		]
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
-            template: './public/index.html',
-            filename: 'index.html',
-            favicon: 'public/favicon.ico',
+			template: path.resolve(__dirname, '../public/index.html'),
+			filename: 'index.html',
+			favicon: path.resolve(__dirname, '../public/favicon.ico'),
 			inject: true,
-            minify: !isDev
-
+			minify: !isDev
 		}),
 		new MiniCssExtractPlugin({
-			filename: 'css/[name].[hash:6].css',
-			chunkFilename: 'css/[id].[hash:6].css',
-			disable: false,  //是否禁用此插件
-			allChunks: true
+			filename: isDev ? 'css/[name].css' : 'css/[name].[hash].css',
+			chunkFilename: isDev ? 'css/[id].css' : 'css/[id].[hash].css',
+			chunks: "all",
 		}),
 	]
 };
