@@ -23,8 +23,8 @@ module.exports = Object.assign({},base,{
 	plugins:[
 	//限定查找 moment/locale 上下文里符合 /zh-cn/ 表达式的文件，因此也只会打包这几种本地化内容
 		new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/,/zh-cn/),
-		new CleanWebpackPlugin(path.resolve(__dirname,'../dist'),{
-			root:path.resolve(__dirname,'../')
+		new CleanWebpackPlugin({
+			root:path.resolve(__dirname,'../dist')
 		}),
 		new CopyWebpackPlugin([
 			{from:'public/'},//作用：把public里面的内容全部拷贝到编译目录
