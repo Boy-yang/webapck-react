@@ -11,8 +11,14 @@ module.exports = Object.assign({}, base, {
 		hot: true,
 		open: true,
 		proxy: {
-			'/api': 'http://localhost:8000',
-			changeOrigin: true
+			'/api': {
+				target: 'http://127.0.0.1:3001',//需要跨域的服务地址（后台服务地址）
+				changeOrigin: true,//必须
+				pathRewrite: {
+					'^/api': ''
+				},
+				secure: false,          // 设置支持https协议的代理
+			}
 		}
 	},
 	plugins: [
