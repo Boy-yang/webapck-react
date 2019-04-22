@@ -12,7 +12,7 @@
 	yarn 1.15.2
 
 使用：
-git clone git@github.com:Boy-yang/Webpack-React.git
-yarn    		安装node_modules
-yarn dev        启动项目
+	git clone git@github.com:Boy-yang/Webpack-React.git
+	yarn    		安装node_modules
+	yarn dev        启动项目
 
