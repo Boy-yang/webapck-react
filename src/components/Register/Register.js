@@ -5,7 +5,7 @@ import { getUserInfo } from "../../actions";
 import "./Register.scss";
 @connect(
   state => ({
-    userInfo: state.base.userInfo
+    userInfo: state.config.userInfo
   }),
   {
     getUserInfo
